@@ -1,37 +1,11 @@
-name: Build EarBalance APK
+    - name: Build Release APK
+      # Debug yerine Release komutu ve RAM düzenlemesi
+      run: ./gradlew assembleRelease -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m" --stacktrace
 
-on:
-  push:
-    branches: [ main, master ]
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-version: '8.2'
-
-    - name: Build Debug APK
-      # Bellek (RAM) düzenlemesi: -Xmx4g ile Gradle'a 4GB limit tanımlandı
-      run: ./gradlew assembleDebug -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m" --stacktrace
-
-    - name: Upload Debug APK
+    - name: Upload Release APK
       uses: actions/upload-artifact@v4
       with:
-        name: EarBalance-APK
-        # Dosya yolunu daha kapsayıcı hale getirdik (*.apk)
-        path: app/build/outputs/apk/debug/*.apk
+        name: EarBalance-Release-APK
+        # Yol 'release' olarak güncellendi
+        path: app/build/outputs/apk/release/*.apk
         retention-days: 30
