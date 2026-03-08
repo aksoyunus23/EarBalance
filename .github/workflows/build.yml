@@ -23,12 +23,13 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      # Hatalı tüm Java değişkenlerini komut içinde SIFIRLIYORUZ
+      # Hatalı olan tüm değişkenleri geçersiz kılıp, sadece Gradle'ın kendi parametresini kullanıyoruz
       run: |
-        export JAVA_TOOL_OPTIONS=""
-        export _JAVA_OPTIONS=""
-        ./gradlew assembleDebug --no-daemon
-        
+        unset JAVA_TOOL_OPTIONS
+        unset _JAVA_OPTIONS
+        unset JAVA_OPTS
+        ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=512m" --stacktrace
+
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
