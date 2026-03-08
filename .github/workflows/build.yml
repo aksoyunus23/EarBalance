@@ -21,16 +21,15 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-version: '8.2'
 
-    # Hata 126'yı çözen kritik adım: Çalıştırma izni veriliyor
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      # Bellek düzenlemesi ve derleme
-      run: ./gradlew assembleDebug -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m" --stacktrace
+      # Bellek (RAM) ayarlarını doğrudan ortam değişkeni olarak veriyoruz
+      env:
+        _JAVA_OPTIONS: "-Xmx4g -Xms1g"
+      run: ./gradlew assembleDebug --no-daemon --stacktrace
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
