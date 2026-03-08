@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Ear Balance</string>
+    <string name="title_home">Ana Ekran</string>
+    <string name="title_statistics">İstatistikler</string>
+    <string name="title_settings">Ayarlar</string>
+</resources>
