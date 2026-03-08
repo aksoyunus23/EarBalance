@@ -26,11 +26,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon --stacktrace
-
-    - name: Upload Debug APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: EarBalance-APK
-        path: app/build/outputs/apk/debug/*.apk
-        retention-days: 30
+      # JAVA_OPTS kullanarak sistemdeki tüm gizli ayarları devre dışı bırakıyoruz
+      run: |
+        export JAVA_OPTS="-Xmx4g -XX:MaxMetaspaceSize=512m"
+        ./gradlew assembleDebug --no-daemon --stacktrace
