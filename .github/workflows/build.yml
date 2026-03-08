@@ -19,19 +19,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      # Hatalı olan tüm gizli ayarları temizleyip APK'yı oluşturuyoruz
-      run: |
-        unset _JAVA_OPTIONS
-        unset JAVA_TOOL_OPTIONS
-        unset JAVA_OPTS
-        ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m" --stacktrace
+      # Hiçbir export veya unset kullanmadan, doğrudan Gradle'ın iç ayarını hedefliyoruz
+      run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxMetaspaceSize=512m"
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
