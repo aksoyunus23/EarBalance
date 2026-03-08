@@ -23,8 +23,12 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      # Hiçbir export veya unset kullanmadan, doğrudan Gradle'ın iç ayarını hedefliyoruz
-      run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxMetaspaceSize=512m"
+      # Hatalı değişkenleri tamamen etkisiz hale getiriyoruz
+      env:
+        _JAVA_OPTIONS: ""
+        JAVA_TOOL_OPTIONS: ""
+        JAVA_OPTS: ""
+      run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2g" --stacktrace
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
