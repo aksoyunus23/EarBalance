@@ -25,11 +25,13 @@ jobs:
         gradle-version: '8.2'
 
     - name: Build Debug APK
-      run: gradle assembleDebug --stacktrace 2>&1 | tail -50
+      # Bellek (RAM) düzenlemesi: -Xmx4g ile Gradle'a 4GB limit tanımlandı
+      run: ./gradlew assembleDebug -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m" --stacktrace
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
         name: EarBalance-APK
-        path: app/build/outputs/apk/debug/app-debug.apk
+        # Dosya yolunu daha kapsayıcı hale getirdik (*.apk)
+        path: app/build/outputs/apk/debug/*.apk
         retention-days: 30
